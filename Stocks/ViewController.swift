@@ -18,9 +18,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(titleLabel)
-        titleLabel.text = "Stocks"
+        titleLabel.text = "Upstox holdings"
         titleLabel.textAlignment = .center
         titleLabel.font = .boldSystemFont(ofSize: 16)
+        titleLabel.backgroundColor = .purple
+        titleLabel.textColor = .white
         
         stocksTableView.backgroundColor = .red
         aggregateView.backgroundColor = .green
@@ -28,7 +30,7 @@ class ViewController: UIViewController {
         view.addSubview(stocksTableView)
         stocksTableView.dataSource = self
         stocksTableView.delegate = self
-        stocksTableView.register(UITableViewCell.self, forCellReuseIdentifier: "stockCell")
+        stocksTableView.register(StockTableViewCell.self, forCellReuseIdentifier: "stockCell")
         view.addSubview(aggregateView)
         setConstraints()
         getData()
@@ -68,8 +70,6 @@ class ViewController: UIViewController {
         aggregateView.leftAnchor.constraint(equalTo:view.leftAnchor).isActive = true
         aggregateView.rightAnchor.constraint(equalTo:view.rightAnchor).isActive = true
         aggregateView.bottomAnchor.constraint(equalTo:view.bottomAnchor).isActive = true
-        
-        
     }
 
 
@@ -82,9 +82,9 @@ extension ViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "stockCell", for: indexPath)
-        cell.textLabel?.text = self.stocksData[indexPath.row].companyName
-          return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "stockCell", for: indexPath) as! StockTableViewCell
+        cell.stock = self.stocksData[indexPath.row]
+        return cell
     }
     
     
