@@ -18,20 +18,20 @@ class StockTableViewCell: UITableViewCell {
                 
                 ltpLabel.text = "LTP: " + (Locale.current.currencySymbol ?? "") + String(stockItem.ltp)
                 
-                let profitLoss = String((stockItem.ltp - (Double(stockItem.avgPrice) ?? 0.0)) * Double(stockItem.quantity))
-                profitLossLabel.text = "P/L: " + (Locale.current.currencySymbol ?? "") +  profitLoss
+                let profitLoss = (stockItem.ltp - (Double(stockItem.avgPrice) ?? 0.0)) * Double(stockItem.quantity)
+                profitLossLabel.text = "P/L: " + (Locale.current.currencySymbol ?? "") +  String(format: "%.5f", profitLoss)
             
             }
         }
     
-    let leftContainerView:UIView = {
+    let leftContainerView: UIView = {
       let view = UIView()
       view.translatesAutoresizingMaskIntoConstraints = false
       view.clipsToBounds = true
       return view
     }()
     
-    let symbolLabel:UILabel = {
+    let symbolLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textAlignment = .left
@@ -39,7 +39,7 @@ class StockTableViewCell: UITableViewCell {
         return label
     }()
     
-    let quantityLabel:UILabel = {
+    let quantityLabel: UILabel = {
       let label = UILabel()
       label.font = UIFont.boldSystemFont(ofSize: 14)
       label.textAlignment = .left
@@ -49,14 +49,14 @@ class StockTableViewCell: UITableViewCell {
        return label
     }()
     
-    let rightContainerView:UIView = {
+    let rightContainerView: UIView = {
       let view = UIView()
       view.translatesAutoresizingMaskIntoConstraints = false
       view.clipsToBounds = true
       return view
     }()
 
-    let ltpLabel:UILabel = {
+    let ltpLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textAlignment = .justified
@@ -64,7 +64,7 @@ class StockTableViewCell: UITableViewCell {
         return label
     }()
     
-    let profitLossLabel:UILabel = {
+    let profitLossLabel: UILabel = {
       let label = UILabel()
       label.font = UIFont.boldSystemFont(ofSize: 14)
         label.textAlignment = .justified
@@ -102,7 +102,7 @@ class StockTableViewCell: UITableViewCell {
         
         quantityLabel.topAnchor.constraint(equalTo:self.symbolLabel.bottomAnchor, constant: 5).isActive = true
         quantityLabel.leadingAnchor.constraint(equalTo:self.leftContainerView.leadingAnchor).isActive = true
-        quantityLabel.topAnchor.constraint(equalTo:self.symbolLabel.bottomAnchor).isActive = true
+        quantityLabel.trailingAnchor.constraint(equalTo:self.leftContainerView.trailingAnchor).isActive = true
         
         
         rightContainerView.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
@@ -117,7 +117,7 @@ class StockTableViewCell: UITableViewCell {
         
         profitLossLabel.topAnchor.constraint(equalTo:self.ltpLabel.bottomAnchor, constant: 5).isActive = true
         profitLossLabel.leadingAnchor.constraint(equalTo:self.rightContainerView.leadingAnchor).isActive = true
-        profitLossLabel.topAnchor.constraint(equalTo:self.ltpLabel.bottomAnchor).isActive = true
+        profitLossLabel.trailingAnchor.constraint(equalTo:self.rightContainerView.trailingAnchor).isActive = true
         
     }
      required init?(coder aDecoder: NSCoder) {
