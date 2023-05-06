@@ -9,6 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    let titleLabel = UILabel()
     let stocksTableView = UITableView()
     let aggregateView = UIView()
     var aggregateData: Stocks!
@@ -16,6 +17,11 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.addSubview(titleLabel)
+        titleLabel.text = "Stocks"
+        titleLabel.textAlignment = .center
+        titleLabel.font = .boldSystemFont(ofSize: 16)
+        
         stocksTableView.backgroundColor = .red
         aggregateView.backgroundColor = .green
         // Do any additional setup after loading the view.
@@ -45,8 +51,14 @@ class ViewController: UIViewController {
     }
     
     func setConstraints() {
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        titleLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40).isActive = true
+        
         stocksTableView.translatesAutoresizingMaskIntoConstraints = false
-        stocksTableView.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor).isActive = true
+        stocksTableView.topAnchor.constraint(equalTo:titleLabel.bottomAnchor).isActive = true
         stocksTableView.leadingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         stocksTableView.trailingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         stocksTableView.bottomAnchor.constraint(equalTo:view.safeAreaLayoutGuide.bottomAnchor, constant: -200).isActive = true
