@@ -11,12 +11,24 @@ class ViewController: UIViewController {
     
     let titleLabel = UILabel()
     let stocksTableView = UITableView()
-    let aggregateView = UIView()
     var aggregateData: Stocks!
     var stocksData: [StockModel] = []
     
+    @IBOutlet weak var aggregateView: UIView!
+    @IBOutlet weak var currentValueLabel: UILabel!
+    @IBOutlet weak var totalInvestmentLabel: UILabel!
+    @IBOutlet weak var todayProfitAndLossLabel: UILabel!
+    @IBOutlet weak var totalProfitAndLossLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setTitle()
+        setTable()
+        view.bringSubviewToFront(aggregateView)
+        getData()
+    }
+    
+    func setTitle() {
         view.addSubview(titleLabel)
         titleLabel.text = "Upstox holdings"
         titleLabel.textAlignment = .center
@@ -24,16 +36,24 @@ class ViewController: UIViewController {
         titleLabel.backgroundColor = .purple
         titleLabel.textColor = .white
         
-        stocksTableView.backgroundColor = .red
-        aggregateView.backgroundColor = .green
-        // Do any additional setup after loading the view.
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        titleLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40).isActive = true
+    }
+    
+    func setTable() {
         view.addSubview(stocksTableView)
         stocksTableView.dataSource = self
         stocksTableView.delegate = self
         stocksTableView.register(StockTableViewCell.self, forCellReuseIdentifier: "stockCell")
-        view.addSubview(aggregateView)
-        setConstraints()
-        getData()
+        
+        stocksTableView.translatesAutoresizingMaskIntoConstraints = false
+        stocksTableView.topAnchor.constraint(equalTo:titleLabel.bottomAnchor).isActive = true
+        stocksTableView.leadingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        stocksTableView.trailingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        stocksTableView.bottomAnchor.constraint(equalTo:view.safeAreaLayoutGuide.bottomAnchor, constant: -200).isActive = true
     }
     
     func getData() {
@@ -44,6 +64,10 @@ class ViewController: UIViewController {
                 self.stocksData = self.aggregateData.data
                 DispatchQueue.main.async {
                     self.stocksTableView.reloadData()
+                    self.currentValueLabel.text = "Test"
+                    self.totalInvestmentLabel.text = "Investment"
+                    self.todayProfitAndLossLabel.text = "Today P/L"
+                    self.totalProfitAndLossLabel.text = "Total P/L"
                 }
                 print("success data: \(data)")
             case .failure(let error):
@@ -51,28 +75,6 @@ class ViewController: UIViewController {
             }
         }
     }
-    
-    func setConstraints() {
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor).isActive = true
-        titleLabel.leadingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        titleLabel.trailingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        titleLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40).isActive = true
-        
-        stocksTableView.translatesAutoresizingMaskIntoConstraints = false
-        stocksTableView.topAnchor.constraint(equalTo:titleLabel.bottomAnchor).isActive = true
-        stocksTableView.leadingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        stocksTableView.trailingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        stocksTableView.bottomAnchor.constraint(equalTo:view.safeAreaLayoutGuide.bottomAnchor, constant: -200).isActive = true
-        
-        aggregateView.translatesAutoresizingMaskIntoConstraints = false
-        aggregateView.topAnchor.constraint(equalTo: stocksTableView.bottomAnchor).isActive = true
-        aggregateView.leftAnchor.constraint(equalTo:view.leftAnchor).isActive = true
-        aggregateView.rightAnchor.constraint(equalTo:view.rightAnchor).isActive = true
-        aggregateView.bottomAnchor.constraint(equalTo:view.bottomAnchor).isActive = true
-    }
-
-
 }
 
 
@@ -92,5 +94,7 @@ extension ViewController: UITableViewDataSource {
 
 
 extension ViewController: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 44
+    }
 }
