@@ -19,7 +19,7 @@ class StockTableViewCell: UITableViewCell {
                 ltpLabel.text = "LTP: " + (Locale.current.currencySymbol ?? "") + String(stockItem.ltp)
                 
                 let profitLoss = (stockItem.ltp - (Double(stockItem.avgPrice) ?? 0.0)) * Double(stockItem.quantity)
-                profitLossLabel.text = "P/L: " + (Locale.current.currencySymbol ?? "") +  String(format: "%.5f", profitLoss)
+                profitLossLabel.text = "P/L: " + (Locale.current.currencySymbol ?? "") +  String(format: "%.2f", profitLoss)
             
             }
         }

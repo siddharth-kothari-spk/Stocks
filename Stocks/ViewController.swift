@@ -30,7 +30,7 @@ class ViewController: UIViewController {
     
     func setTitle() {
         view.addSubview(titleLabel)
-        titleLabel.text = "Upstox holdings"
+        titleLabel.text = "Upstox Holding"
         titleLabel.textAlignment = .center
         titleLabel.font = .boldSystemFont(ofSize: 16)
         titleLabel.backgroundColor = .purple
@@ -53,7 +53,7 @@ class ViewController: UIViewController {
         stocksTableView.topAnchor.constraint(equalTo:titleLabel.bottomAnchor).isActive = true
         stocksTableView.leadingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         stocksTableView.trailingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        stocksTableView.bottomAnchor.constraint(equalTo:view.safeAreaLayoutGuide.bottomAnchor, constant: -200).isActive = true
+        stocksTableView.bottomAnchor.constraint(equalTo:view.safeAreaLayoutGuide.bottomAnchor, constant: -240).isActive = true
     }
     
     func getData() {
@@ -64,10 +64,19 @@ class ViewController: UIViewController {
                 self.stocksData = self.aggregateData.data
                 DispatchQueue.main.async {
                     self.stocksTableView.reloadData()
-                    self.currentValueLabel.text = "Test"
-                    self.totalInvestmentLabel.text = "Investment"
-                    self.todayProfitAndLossLabel.text = "Today P/L"
-                    self.totalProfitAndLossLabel.text = "Total P/L"
+                    
+                    var currentValue = 0.0
+                    var totalInvestment = 0.0
+                    var todayProfitAndLoss = 0.0
+                    for stock in self.stocksData {
+                        currentValue += stock.ltp * Double(stock.quantity)
+                        totalInvestment += (Double(stock.avgPrice) ?? 0.0) * Double(stock.quantity)
+                        todayProfitAndLoss += (stock.close - stock.ltp) * Double(stock.quantity)
+                    }
+                    self.currentValueLabel.text = (Locale.current.currencySymbol ?? "") +  String(format: "%.2f", currentValue)
+                    self.totalInvestmentLabel.text = (Locale.current.currencySymbol ?? "") +  String(format: "%.2f", totalInvestment)
+                    self.todayProfitAndLossLabel.text = (Locale.current.currencySymbol ?? "") +  String(format: "%.2f", todayProfitAndLoss)
+                    self.totalProfitAndLossLabel.text = (Locale.current.currencySymbol ?? "") +  String(format: "%.2f", currentValue - totalInvestment)
                 }
                 print("success data: \(data)")
             case .failure(let error):
